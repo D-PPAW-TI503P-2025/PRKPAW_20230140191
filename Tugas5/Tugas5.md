@@ -1,6 +1,6 @@
 # Tugas 5
 
-- **Nama:** Duta Brahmana Nusantara
+- **Nama:** Duta Brahmana Nusantaraa
 - **NIM:** 20230140191
 - **Kelas:** D
 
