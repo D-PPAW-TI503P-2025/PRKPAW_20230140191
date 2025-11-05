@@ -1,30 +1,35 @@
+// routes/books.js
+
 const express = require('express');
 const router = express.Router();
 
-// Array ini berfungsi sebagai database sementara untuk menyimpan data buku
+// Menggunakan array sebagai penyimpanan data sementara (sesuai instruksi tugas)
 let books = [
   {id: 1, title: 'Book 1', author: 'Author 1'},
   {id: 2, title: 'Book 2', author: 'Author 2'}
 ];
 
-// READ all books
+// READ all books (GET /api/books)
 router.get('/', (req, res) => {
   res.json(books);
 });
 
-// READ a single book by ID
+// READ a single book by ID (GET /api/books/:id)
 router.get('/:id', (req, res) => {
   const book = books.find(b => b.id === parseInt(req.params.id));
-  if (!book) return res.status(404).send('Book not found');
+  // Jika buku tidak ditemukan, kirim status 404
+  if (!book) return res.status(404).json({ message: 'Book not found' });
   res.json(book);
 });
 
-// CREATE a new book
+// CREATE a new book (POST /api/books)
 router.post('/', (req, res) => {
+  // Implementasi validasi input sederhana
   const { title, author } = req.body;
   if (!title || !author) {
     return res.status(400).json({ message: 'Title and author are required' });
   }
+
   const book = {
     id: books.length + 1,
     title,
@@ -34,11 +39,12 @@ router.post('/', (req, res) => {
   res.status(201).json(book);
 });
 
-// UPDATE a book by ID
+// UPDATE a book by ID (PUT /api/books/:id) -> TAMBAHAN UNTUK TUGAS
 router.put('/:id', (req, res) => {
   const book = books.find(b => b.id === parseInt(req.params.id));
-  if (!book) return res.status(404).send('Book not found');
-  
+  if (!book) return res.status(404).json({ message: 'Book not found' });
+
+  // Implementasi validasi input
   const { title, author } = req.body;
   if (!title || !author) {
     return res.status(400).json({ message: 'Title and author are required' });
@@ -49,14 +55,15 @@ router.put('/:id', (req, res) => {
   res.json(book);
 });
 
-// DELETE a book by ID
+// DELETE a book by ID (DELETE /api/books/:id) -> TAMBAHAN UNTUK TUGAS
 router.delete('/:id', (req, res) => {
   const bookIndex = books.findIndex(b => b.id === parseInt(req.params.id));
-  if (bookIndex === -1) return res.status(404).send('Book not found');
+  if (bookIndex === -1) return res.status(404).json({ message: 'Book not found' });
 
-  const deletedBook = books.splice(bookIndex, 1);
-  res.json(deletedBook[0]);
+  // Hapus buku dari array menggunakan splice
+  books.splice(bookIndex, 1);
+  // Kirim response no content untuk menandakan berhasil tanpa mengembalikan data
+  res.status(204).send();
 });
 
-// Export router agar bisa digunakan di file server.js
 module.exports = router;
