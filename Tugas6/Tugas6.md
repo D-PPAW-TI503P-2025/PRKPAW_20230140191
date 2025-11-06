@@ -1,6 +1,6 @@
 Tugas 6
 - *Nama:* Duta Brahmana Nusantara
-- *NIM:* 202301401
+- *NIM:* 20230140191
 - *Kelas:* D
 
 ---
