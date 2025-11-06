@@ -9,6 +9,7 @@ const morgan = require("morgan"); // Middleware logging
 const ruteBuku = require("./routes/books"); // Router dari pertemuan sebelumnya
 const presensiRoutes = require("./routes/presensi"); // Router baru
 const reportRoutes = require("./routes/reports");   // Router baru
+const authRoutes = require('./routes/auth'); // <-- Impor rute auth
 
 // Middleware Global
 app.use(cors()); // Mengizinkan request dari origin berbeda
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 app.use("/api/books", ruteBuku); // Rute untuk buku
 app.use("/api/presensi", presensiRoutes); // Rute untuk presensi
 app.use("/api/reports", reportRoutes);   // Rute untuk reports
+app.use('/api/auth', authRoutes); // <-- Daftarkan rute /api/auth
 
 // Jalankan Server
 app.listen(PORT, () => {
