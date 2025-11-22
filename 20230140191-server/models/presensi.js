@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Presensi.init({
+    Presensi.init({
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,

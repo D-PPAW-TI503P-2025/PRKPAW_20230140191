@@ -1,39 +1,30 @@
-// server.js
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const PORT = 3001;
-const morgan = require("morgan"); // Middleware logging
+const morgan = require("morgan");
 
 // Impor router
-const ruteBuku = require("./routes/books"); // Router dari pertemuan sebelumnya
-const presensiRoutes = require("./routes/presensi"); // Router baru
-const reportRoutes = require("./routes/reports");   // Router baru
-const authRoutes = require('./routes/auth'); // <-- Impor rute auth
+const presensiRoutes = require("./routes/presensi");
+const reportRoutes = require("./routes/reports");
 
-// Middleware Global
-app.use(cors()); // Mengizinkan request dari origin berbeda
-app.use(express.json()); // Mem-parsing body request JSON
-app.use(morgan("dev")); // Logging request ke console (format 'dev')
-
-// Middleware logging custom (opsional, contoh dari modul)
+const authRoutes = require('./routes/auth');
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(morgan("dev"));
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next(); // Lanjutkan ke middleware/route selanjutnya
+  next();
 });
-
-// Rute Dasar
 app.get("/", (req, res) => {
-  res.send("Home Page for API presensi dan buku");
+  res.send("Home Page for API");
 });
-
-// Gunakan Router
-app.use("/api/books", ruteBuku); // Rute untuk buku
-app.use("/api/presensi", presensiRoutes); // Rute untuk presensi
-app.use("/api/reports", reportRoutes);   // Rute untuk reports
-app.use('/api/auth', authRoutes); // <-- Daftarkan rute /api/auth
-
-// Jalankan Server
+const ruteBuku = require("./routes/books");
+app.use("/api/books", ruteBuku);
+app.use("/api/presensi", presensiRoutes);
+app.use("/api/reports", reportRoutes);
+app.use('/api/auth', authRoutes);
 app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
+  console.log(`Express server running at http://localhost:${PORT}/`);
 });
