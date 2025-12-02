@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+
 const presensiController = require('../controllers/presensiController');
 const { authenticateToken } = require('../middleware/permissionMiddleware');
 
-// Semua route presensi wajib login (JWT)
 router.use(authenticateToken);
 
 router.post('/check-in', presensiController.CheckIn);
