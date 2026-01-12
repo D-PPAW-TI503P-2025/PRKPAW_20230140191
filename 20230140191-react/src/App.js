@@ -1,85 +1,72 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-
-import Navbar from "./components/Navbar";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
-import PresensiPage from "./components/PresensiPage";
-import ReportPage from "./components/ReportPage";
 import DashboardPage from "./components/DashboardPage";
+import AttendancePage from "./components/PresensiPage";
+import ReportPage from "./components/ReportPage";
+// --- TAMBAHAN IMPORT ---
+import SensorPage from "./components/SensorPage"; 
+// -----------------------
+import Navbar from "./components/Navbar";
+import "leaflet/dist/leaflet.css";
 
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) return <Navigate to="/login" />;
-
-  try {
-    jwtDecode(token);
-    return children;
-  } catch {
-    localStorage.removeItem("token");
-    return <Navigate to="/login" />;
-  }
-};
-
-const AdminRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) return <Navigate to="/login" />;
-
-  try {
-    const user = jwtDecode(token);
-    if (user.role !== "admin") return <Navigate to="/" />;
-    return children;
-  } catch {
-    localStorage.removeItem("token");
-    return <Navigate to="/login" />;
-  }
+const MainLayout = ({ children }) => {
+  return (
+    <div>
+      <Navbar />
+      <main>{children}</main>
+    </div>
+  );
 };
 
 function App() {
-  const token = localStorage.getItem("token");
-
   return (
     <Router>
-      {token && <Navbar />}
-
-      <div className="pt-20">
+      <div>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
           <Route
-            path="/presensi"
+            path="/dashboard"
             element={
-              <ProtectedRoute>
-                <PresensiPage />
-              </ProtectedRoute>
+              <MainLayout>
+                <DashboardPage />
+              </MainLayout>
             }
           />
-
+          <Route
+            path="/attendance"
+            element={
+              <MainLayout>
+                <AttendancePage />
+              </MainLayout>
+            }
+          />
           <Route
             path="/reports"
             element={
-              <AdminRoute>
+              <MainLayout>
                 <ReportPage />
-              </AdminRoute>
+              </MainLayout>
             }
           />
-
+          
+          {/* --- TAMBAHAN ROUTE MONITORING --- */}
           <Route
-            path="/"
+            path="/monitoring"
             element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
+              <MainLayout>
+                <SensorPage />
+              </MainLayout>
             }
           />
+          {/* --------------------------------- */}
+
+          <Route path="/" element={<LoginPage />} />
         </Routes>
       </div>
     </Router>
   );
 }
-
 export default App;
