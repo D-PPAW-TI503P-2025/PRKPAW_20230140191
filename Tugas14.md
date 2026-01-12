@@ -1,6 +1,6 @@
 Tugas 14
-- **Nama:** Putra Nugroho
-- **NIM:** 20230140165
+- **Nama:** Duta Brahmana Nusantara
+- **NIM:** 20230140191
 - **Kelas:** D
 
 ---
